@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rottenpotatoes
+  labels:
+    app: rottenpotatoes
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rottenpotatoes
+  template:
+    metadata:
+      name: rottenpotatoes
+      labels:
+        app: rottenpotatoes
+    spec:
+      containers:
+        - name: rottenpotatoes
+          image: evertonagilar/rotten-potatoes:1.0.0
+          env:
+            - name: MONGODB_DB
+              value: "admin"
+            - name: MONGODB_HOST
+              value: "mongodb"
+            - name: MONGODB_PORT
+              value: "27017"
+            - name: MONGODB_USERNAME
+              value: "root"
+            - name: MONGODB_PASSWORD
+              value: "123456"
+          ports:
+            - containerPort: 5000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rottenpotatoes
+  labels:
+    app: rottenpotatoes
+spec:
+  selector:
+    app: rottenpotatoes
+  ports:
+    - name: rottenpotatoes
+      port: 5000
+      nodePort: 30001
+  type: NodePort
+
+

@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payara
+spec:
+  selector:
+    matchLabels:
+      app: payara
+  template:
+    metadata:
+      labels:
+        app: payara
+    spec:
+      containers:
+      - name: payara
+        image: evertonagilar/payara-test:1.0.0
+        imagePullPolicy: Always
+        envFrom:
+          - configMapRef:
+              name: profile-replica
+        volumeMounts:
+          - name: artifacts-path-vol
+            mountPath: /opt/payara/deployments:rw
+        resources:
+          limits:
+            memory: "4028Mi"
+            cpu: "1500m"
+        ports:
+        - containerPort: 8080
+        - containerPort: 8181
+        - containerPort: 4848
+        - containerPort: 9009
+      volumes:
+        - name: artifacts-path-vol
+          hostPath:
+            path: /home/evertonagilar/deployment/0-artifacts
