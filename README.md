@@ -25,19 +25,19 @@ kind create cluster --name mycluster --config mycluster-config.yaml
 
 ------------------------------------
 
-# Usar o cluster
+### Usar o cluster
 
 kubectl cluster-info --context kind-mycluster
 
 ------------------------------------
 
-# Importar o configmap profile-replica
+### Importar o configmap profile-replica
 
 kubectl create configmap profile-replica --from-env-file profile-replica.env
 
 ------------------------------------
 
-# Se precisar entrar em um pod
+### Se precisar entrar em um pod
 
 kubectl exec -ti nome_do_pod -- bash
 
