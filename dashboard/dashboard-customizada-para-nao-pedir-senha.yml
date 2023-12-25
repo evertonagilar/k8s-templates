@@ -1,0 +1,37 @@
+# Install the customised K8s Dashboard YAML:
+
+kubectl apply -f /root/dashboard.yaml
+kubectl -n kubernetes-dashboard wait --for=condition=ready pod --all
+
+## The modifications here were these arguments:
+
+args:
+- --namespace=kubernetes-dashboard
+- --enable-skip-login
+- --disable-settings-authorizer
+- --enable-insecure-login
+- --insecure-bind-address=0.0.0.0
+
+
+## and an updated service YAML:
+
+kind: Service
+apiVersion: v1
+metadata:
+  labels:
+    k8s-app: kubernetes-dashboard
+  name: kubernetes-dashboard
+  namespace: kubernetes-dashboard
+spec:
+  ports:
+    - port: 9090
+      targetPort: 9090
+  selector:
+    k8s-app: kubernetes-dashboard
+
+
+## Create a ServiceAccount and use the token:
+
+kubectl -n kubernetes-dashboard create sa admin-user
+kubectl create clusterrolebinding admin-user --clusterrole cluster-admin --serviceaccount kubernetes-dashboard:admin-user
+kubectl -n kubernetes-dashboard create token admin-user
