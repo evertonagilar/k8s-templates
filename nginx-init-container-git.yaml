@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-git
+spec:
+  containers:
+  - image: nginx:alpine
+    name: nginx
+    volumeMounts:
+    - mountPath: /usr/share/nginx/html
+      name: data  
+  initContainers:
+  - image: alpine/git
+    name: git
+    args:
+      - clone
+      - https://github.com/jhawithu/k8s-nginx.git 
+      - /data  
+    volumeMounts:
+    - mountPath: /data
+      name: data  
+  volumes:    
+  - name: data
+    emptyDir: {} 
+

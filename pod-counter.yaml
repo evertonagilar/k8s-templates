@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-counter
+spec:
+  containers:
+  - name: pod-counte
+    image: busybox
+    args: 
+      - "/bin/sh"
+      - "-c"
+      - "i=1; while true; do echo $i: $(date); i=$((i+1)); sleep 1; done;"  
+
